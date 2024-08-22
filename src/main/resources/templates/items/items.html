@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/base :: common_head(~{::title}, ~{::link})}">
+    <title>전체 리스트</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<!-- navbar -->
+<div th:replace="~{layout/header :: logout_header}"></div>
+<div class="container">
+    <!--search box-->
+    <div class="d-flex justify-content-start search-box mb-3">
+        <form class="d-flex" role="search" th:object="${itemSearch}" method="get">
+            <input class="form-control me-2 search-box" aria-label="Search"
+                   type="text" placeholder="상품명" th:field="*{itemName}"/>
+            <input class="form-control me-2 search-box" aria-label="Search"
+                   type="text" placeholder="가격제한" th:field="*{maxPrice}"/>
+            <button class="btn btn-outline-success search-button" type="submit">Search</button>
+        </form>
+        <!-- button-->
+        <div class="ms-auto">
+            <button class="btn btn-outline-success" type="button"
+                    onclick="location.href='items/addForm.html'"
+                    th:onclick="|location.href='@{/items/add}'|">등록
+            </button>
+        </div>
+    </div>
+    <!-- item table -->
+    <div class="items-list">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col">상품명</th>
+                <th scope="col">가격</th>
+                <th scope="col">수량</th>
+                <th scope="col">조회수</th>
+                <th scope="col">등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item:${items}">
+                <td>
+                    <a href="items/item.html"
+                       th:href="@{/items/{itemId}(itemId=${item.id})}"
+                       th:text="${item.id}">회원id
+                    </a>
+                </td>
+                <td>
+                    <a href="items/item.html"
+                       th:href="@{|/items/${item.id}|}"
+                       th:text="${item.itemName}">상품명
+                    </a>
+                </td>
+                <td th:text="${item.price}">10000</td>
+                <td th:text="${item.quantity}">10</td>
+                <td th:text="${item.updateHits}">0</td>
+                <td th:text="${item.createDate}">2024</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- paging -->
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!--footer-->
+<div th:insert="~{layout/footer :: common_footer}"></div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/base :: common_head(~{::title}, ~{::link})}">
+    <title>회원가입</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/item/common.css}">
+</head>
+<style>
+    .field-error {
+        color:red;
+        }
+    hr {
+        width:35%
+        }
+</style>
+<body>
+<!--navbar-->
+<div th:replace="~{layout/header :: common_header}"></div>
+<div class="container ms-5">
+    <h2>회원가입</h2>
+    <hr>
+    <form name="join" th:action th:object="${member}" method="post">
+        <div>
+            <label for="userName" class="form-label">*이름</label>
+            <input type="text" class="form-control w-25" id="userName" th:field="*{userName}"
+                   th:errorclass="field-error" autocomplete="off"/>
+            <div class="field-error" th:errors="*{userName}"></div>
+        </div>
+        <div>
+            <label for="loginId" class="form-label" id="loginId-label">*아이디</label>
+            <input type="text" name="loginId" class="form-control w-25" id="loginId"
+                   th:field="*{loginId}" th:errorclass="field-error" autocomplete="off"/>
+            <div class="field-error" th:errors="*{loginId}"></div>
+        </div>
+        <div>
+            <label for="password" class="form-label">*비밀번호</label>
+            <input type="password" class="form-control w-25" id="password" th:field="*{password}"
+                   th:errorclass="field-error" autocomplete="off">
+            <div class="field-error" th:errors="*{password}"></div>
+        </div>
+        <div>
+            <label for="checkPassword" class="form-label">*비밀번호 확인</label>
+            <input type="password" class="form-control w-25" id="checkPassword" th:field="*{checkPassword}"
+                   th:errorclass="field-error" autocomplete="off">
+            <div class="field-error" th:errors="*{checkPassword}"></div>
+            <div th:if="${#fields.hasGlobalErrors()}">
+            </div>
+            <div>
+                <label for="phone" class="form-label">*연락처</label>
+                <input type="text" class="form-control w-25" id="phone" placeholder="-제외하고 입력해 주세요." th:field="*{phone}"
+                       th:errorclass="field-error" autocomplete="off">
+                <div class="field-error" th:errors="*{phone}"></div>
+            </div>
+            <div>
+                <label for="email" class="form-label">*이메일주소(비밀번호 찾기 등 본인 확인용)</label>
+                <input type="email" class="form-control w-25" id="email" th:field="*{email}" th:errorclass="field-error"
+                       autocomplete="off">
+                <div class="field-error" th:errors="*{email}"></div>
+            </div>
+            <div>
+                <label for="zipCode" class="form-label">*우편번호</label>
+                <div class="d-flex justify-content-start w-25">
+                    <input type="text" class="form-control" id="zipCode" readonly="readonly" th:field="*{zipCode}"
+                           th:errorclass="field-error" autocomplete="off">
+                    <input type="button" onclick="execDaumPostcode()" class="btn btn-outline-success ms-1"
+                           value="우편번호 찾기">
+                </div>
+                <div class="field-error" th:errors="*{zipCode}"></div>
+            </div>
+            <div>
+                <label for="address" class="form-label">*주소</label>
+                <input type="text" class="form-control w-25" id="address" readonly="readonly" th:field="*{address}"
+                       th:errorclass="field-error" autocomplete="off">
+                <div class="field-error" th:errors="*{address}"></div>
+            </div>
+            <div>
+                <label for="detailAddress" class="form-label">*상세주소</label>
+                <input type="text" class="form-control w-25" id="detailAddress" th:field="*{detailAddress}"
+                       th:errorclass="field-error" autocomplete="off">
+                <div class="field-error" th:errors="*{detailAddress}"></div>
+            </div>
+            <div>
+                <label for="birth" class="form-label">*생년월일 8자리</label>
+                <input type="date" class="form-control w-25" id="birth" placeholder="ex)1999-01-01" th:field="*{birth}"
+                       th:errorclass="field-error" autocomplete="off">
+                <div class="field-error" th:errors="*{birth}"></div>
+            </div>
+            <!-- button -->
+            <div class="d-inline-flex mt-2">
+                <div>
+                    <button class="btn btn-outline-success" id="signup" type="submit">회원 가입</button>
+                </div>
+                <div>
+                    <button class="btn btn-outline-success ms-2" type="button"
+                            onclick="location.href='/index.html'"
+                            th:onclick="|location.href='@{/}'|">취소
+                    </button>
+                </div>
+            </div>
+    </form>
+</div>
+<!--footer-->
+<div th:insert="~{layout/footer :: common_footer}"></div>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    /* input 입력 후 엔터 시 submit 방지 위함 */
+    document.addEventListener('keydown', function(event) {
+        if ((event.keyCode || event.which) === 13) {
+        event.preventDefault();
+        }
+        }, true);
+
+    /* 다음 주소 api 연동 */
+          function execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('zipCode').value = data.zonecode;
+                    document.getElementById("address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("detailAddress").focus();
+                }
+            }).open();
+        }
+</script>

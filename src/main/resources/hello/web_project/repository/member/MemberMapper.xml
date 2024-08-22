@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hello.web_project.repository.member.MemberMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="mId">
+        insert into member(user_name, login_id, password, check_password, phone, email, zip_code, address, detail_address, birth)
+        values (#{userName}, #{loginId}, #{password}, #{checkPassword}, #{phone}, #{email}, #{zipCode}, #{address}, #{detailAddress}, #{birth})
+    </insert>
+
+    <select id="checkLoginId">
+        select * from member where login_id = #{loginId}
+    </select>
+
+    <select id="findById" resultType="member">
+        select * from member where m_id = #{mId}
+    </select>
+
+</mapper>

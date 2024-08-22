@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/base :: common_head(~{::title}, ~{::link})}">
+    <title>상품등록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<!--navbar-->
+<div th:replace="~{layout/header :: logout_header}"></div>
+<div class="container">
+    <h2>게시글 수정</h2>
+    <hr>
+    <!--edit form-->
+    <div class="w-25">
+    <form action="items/item.html" th:action method="post">
+        <div>
+            <label for="id">상품 ID</label>
+            <input class="form-control" aria-label="default input example" type="text"
+                   id="id" name="id" value="1" th:value="${item.id}" readonly/>
+        </div>
+        <div>
+            <label for="itemName">상품명</label>
+            <input class="form-control" aria-label="default input example" type="text"
+                   id="itemName" name="itemName" value="상품A" th:value="${item.itemName}"/>
+        </div>
+        <div>
+            <label for="price">가격</label>
+            <input class="form-control" aria-label="default input example"
+                   type="text" id="price" name="price" value="1000" th:value="${item.price}"/>
+        </div>
+        <div>
+            <label for="quantity">수량</label>
+            <input class="form-control" aria-label="default input example" type="text"
+                   id="quantity" name="quantity" value="5" th:value="${item.quantity}"/>
+        </div>
+        <!--button-->
+        <div class="border d-inline-flex mt-2">
+            <div>
+                <button class="btn btn-outline-success" type="submit">저장</button>
+            </div>
+            <div>
+                <button class="btn btn-outline-success ms-2" type="button"
+                        onclick="location.href='items/items.html'"
+                        th:onclick="|location.href='@{/items/{itemId}(itemId=${item.id})}'|">취소
+                </button>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+<!--footer-->
+<div th:insert="~{layout/footer :: common_footer}"></div>
+
+</body>
+</html>

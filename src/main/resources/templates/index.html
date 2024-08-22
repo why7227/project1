@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- header -->
+<head th:replace="~{layout/base :: common_head(~{::title}, ~{::link})}">
+    <title>메인 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<!-- navbar -->
+<div th:replace="~{layout/header :: common_header}"></div>
+
+<!--footer-->
+<div th:insert="~{layout/footer :: common_footer}"></div>
+</body>
+</html>
